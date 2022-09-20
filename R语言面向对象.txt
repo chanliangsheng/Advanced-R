@@ -1,0 +1,5 @@
+1.应该把定义类的代码都放在同一个R文件中，并且是从上到下定义的，从已知的类到未知的类
+2.定义泛型函数不需要roxygens的注释，但是setmethod需要写roxygens的注释
+3.设置泛型函数setGeneric的时候应该把函数参数加。。。
+setGeneric(name = "matchMS1" , function(object , ...){standardGeneric("matchMS1")})
+4.泛型函数的参数默认值要在定义泛型函数时确认

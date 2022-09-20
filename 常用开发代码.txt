@@ -1,0 +1,74 @@
+library(devtools)
+library(roxygens)
+library(roxytest)
+library(testthat)
+
+加载这三个包
+
+==========================================================================================================================================================
+
+usethis::create_package("包名")：创建R包
+usethis::use_r("脚本名字")：创建一个脚本函数
+菜单中code -> insert roxygens skeleton 快捷添加脚本函数中的注释
+usethis::use_gpl3_license()：创建许可证
+usethis::use_roxygen_md()：使得函数写的注释转化为markdown文本
+usethis::use_testthat()：创建test文件中，里面的test可以用于测试。
+usethis::test()：在test文件夹中加入test的函数用于测试
+usethis::use_package_doc()：在R文件中加入对于这个包的说明文档，从而?包名可以出现包的说明文档
+usethis::use_citation()：载入citation文档，当别人library你的包的时候，这个文字中的文档会出现
+usethis::use_data(对象，internal = TRUE)：将对应的对应存储在R包的data文件中，可以用data(数据)，来访问该数据,internal代表这个数据会不会开发给用户使用，可以使用包名:::(三个冒号)对应的内置数据集来访问该数据库
+（但是sysdata.rda不能append）
+解决方案：将数据库放入data.raw文件中，编写脚本将所有数据库放入sysdata.rda文件中
+
+==========================================================================================================================================================
+
+devtools::document()：更新文档到namespace和description中
+devtools::load_all()：加载所有写好的函数 -> 才可以开始执行新的函数
+（ 修改了代码要load_all,修改了注释要document() ）
+devtools::test()：测试test文件夹中的所有设定要测试的函数
+
+总而言之：1.usethis::use_r  
+2.编写函数
+3.菜单中code -> insert roxygens skeleton 快捷添加脚本函数中的注释
+4.usethis::test("test文件名")：在test文件夹中加入test的函数用于测试
+5.在新建的test脚本中运行编写的函数
+6.devtools::document()：更新编写的文档
+7.devtools::test()：测试test的所有脚本
+8.devtools::load_all()：加载所有函数
+9.包名::函数来使用这个函数
+10.使用usethis::use_data(....)：将对应的对应存储在R包的data文件中，可以用data(数据)，来访问该数据
+==========================================================================================================================================================
+Roxygen: list(markdown = TRUE,roclets = c("namespace", "rd", 
+                          "roxytest::testthat_roclet"))
+在description中编辑roxygen中的字段，使得脚本函数注释的时候可以引用testexample的字段，使得这个example可以同步到r包的test文件夹中
+
+函数中的example字段：
+
+#' @example
+#' 接着想要写的例子
+#' @testexamples
+#'  接着要写的例子,当devtools::document()的时候会将文件同步到test文件夹中
+常用的函数的字段：
+#' @title
+#' @param x a number
+#' @param y a number
+#' @return a number
+#' @export
+#' @examples
+#' a <- addr(1,2)
+#' b <- addr(2,3)
+#' @testexamples（不会出现在？函数的说明文档中，因为这个字段是roxytest提供的）
+#' expect_equal(a,3)
+#' expect_error(a,"3")
+
+==========================================================================================================================================================
+
+加入依赖包！！！！！！！！！！！！！！！！
+usethis::use_pipe()：加入管道的依赖包
+
+在脚本函数字段中加入#' @importFrom "包名" “对应的函数”（记得不要写错包名和函数名）
+
+需要在description的Imports字段中加入对应的包的名字
+可以使用usethis::use_package("包名"，min_version = "版本号")在description中加入需要的包
+
+@import 和 @importFrom的区别：@import 是导入整个包的所有函数，@importFrom是导入特定的函数   
